@@ -20,7 +20,8 @@
 	{
 		$json = $dir . "$filelist[$id]";
 		$test = json_decode(file_get_contents($json), true);
-	
+	if (isset($test['1']['textQwestion']))
+	{
 	if (isset($_POST['test_id']))
 	{	
 		if (isset($_POST['userAnswer']))
@@ -44,6 +45,9 @@
     		echo "Введите ответы!";
     	}
 	}
+} else {
+	die("Файл не корректный!<p><a href=\"list.php\">Выбрать другой тест</a></p>");
+}
 	} else {
 		die("Файл не существует!<p><a href=\"list.php\">Выбрать другой тест</a></p>");
 	}
