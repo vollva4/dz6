@@ -1,5 +1,16 @@
 
 <?php
+function errorCheck($json) {
+	$content = file_get_contents($json) ;
+	$test = json_decode($content, true);
+	foreach ($test as $value) {
+		if ((!$value['id']) or (!$value['textQwestion']) or (!$value['answer']) or (!$value['correct'])) {
+			http_response_code(404);
+			echo 'Некорректные данные!';
+			exit(1);;
+		}
+	}
+}
 if (isset($_FILES['userfile']['name']))
 {   
 	$error = $_FILES['userfile']['error'];
@@ -19,8 +30,11 @@ if (isset($_FILES['userfile']['name']))
 		    	echo "Файл $name уже существует. Выберите другой файл!</br>";
 			} else {
 				$tmp_name = $_FILES['userfile']['tmp_name'];
+				errorCheck($_FILES['userfile']['name']);
         		move_uploaded_file($tmp_name, $uploaddir);
-        		echo "Файл $name успешно отправлен!</br>";
+        		header('Location: list.php');
+        		exit();
+        		//echo "Файл $name успешно отправлен!</br>";
         	}
 		}
 	} elseif (empty(($_FILES['userfile']['name']))) 
